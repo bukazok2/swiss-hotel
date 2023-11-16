@@ -12,7 +12,7 @@ class CreateCountriesTable extends Migration
         $this->forge->addField([
             'id' => [
                 'type' => 'INT',
-                'constraint' => 5,
+                'constraint' => 12,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
@@ -20,7 +20,7 @@ class CreateCountriesTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'country_id' => [
+            'ext_country_id' => [  // Updated field name to match the model
                 'type' => 'INT',
                 'unique' => true,
                 'constraint' => 12,

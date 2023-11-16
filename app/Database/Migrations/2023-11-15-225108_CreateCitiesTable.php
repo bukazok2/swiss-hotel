@@ -20,7 +20,7 @@ class CreateCitiesTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '1024',
             ],
-            'city_id' => [
+            'ext_city_id' => [  // Updated field name to match the model
                 'type' => 'INT',
                 'constraint' => 12,
                 'unique' => true,

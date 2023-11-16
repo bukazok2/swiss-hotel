@@ -28,6 +28,11 @@ class CreatePricesTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '50',
             ],
+            'cheapest_flag' => [
+                'type' => 'TINYINT',  
+                'constraint' => 1,
+                'default' => 0,
+            ],
             'created_at' => [
                 'type' => 'TIMESTAMP',
                 'default' => new RawSql('CURRENT_TIMESTAMP'),

@@ -20,10 +20,18 @@ class CreateHotelsTable extends Migration
                 'type' => 'INT',
                 'constraint' => 12,
             ],
-            'hotel_id' => [
+            'ext_hotel_id' => [
                 'type' => 'INT',
                 'constraint' => 12,
                 'unique' => true,
+            ],
+            'country_id' => [  // Add this line
+                'type' => 'INT',
+                'constraint' => 12,
+            ],
+            'city_id' => [  // Add this line
+                'type' => 'INT',
+                'constraint' => 12,
             ],
             'address' => [
                 'type' => 'VARCHAR',
