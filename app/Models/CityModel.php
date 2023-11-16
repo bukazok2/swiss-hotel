@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use App\Traits\InsertOrUpdateTrait;
+use App\Traits\ModelExtTrait;
 
 class CityModel extends Model
 {
-    use InsertOrUpdateTrait;
+    use ModelExtTrait;
 
     protected $table = 'cities';
     protected $primaryKey = 'id';
@@ -18,4 +18,5 @@ class CityModel extends Model
         "created_at",
         "updated_at",
     ];
+    protected $returnType    = \App\Entity\City::class;
 }

@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use App\Traits\InsertOrUpdateTrait;
+use App\Traits\ModelExtTrait;
 
 class AttachmentsModel extends Model
 {
-    use InsertOrUpdateTrait;
+    use ModelExtTrait;
 
     protected $table = 'attachments';
     protected $primaryKey = 'id';

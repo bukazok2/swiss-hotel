@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use App\Traits\InsertOrUpdateTrait;
+use App\Traits\ModelExtTrait;
 
 class HotelModel extends Model
 {
-    use InsertOrUpdateTrait;
+    use ModelExtTrait;
     protected $table = 'hotels';
     protected $primaryKey = 'id';
     protected $allowedFields = [
@@ -25,4 +25,5 @@ class HotelModel extends Model
         "created_at",
         "updated_at",
     ];
+    protected $returnType    = \App\Entity\Hotel::class;
 }

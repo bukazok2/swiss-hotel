@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities;
+namespace App\Entity;
 
 use CodeIgniter\Entity\Entity;
 
@@ -15,7 +15,7 @@ class Hotel extends Entity
 
     public function setStar(string $star) : Hotel
     {
-        $this->attributes['ext_hotel_id'] = intval($star);
+        $this->attributes['star'] = intval($star);
 
         return $this;
     }

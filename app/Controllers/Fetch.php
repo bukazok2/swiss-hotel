@@ -6,6 +6,7 @@ use Exception;
 use \Config\Services;
 
 use \CodeIgniter\HTTP\CURLRequest;
+use \App\Services\DataProcessor;
 
 class Fetch extends BaseController
 {
@@ -13,13 +14,14 @@ class Fetch extends BaseController
     private string $apiKey = 'b92189884ce200d55d403ccfe68f98f4';
 
     private CURLRequest $curl;
+    private DataProcessor $procesor;
    
 
     public function __construct()
     {
         // as far as I know there is no built in dependecy injection in codeigniter
         $this->curl = Services::curlrequest();
-        
+        $this->procesor = new \App\Services\DataProcessor(); // TODO call throu Services
     }
 
     public function index(): string
@@ -34,14 +36,9 @@ class Fetch extends BaseController
             return "e:" . $e->getMessage();
         }
      
-        $this->processResponse($response);
+        $this->procesor->processData($response);
 
         return "success";
-    }
-
-    private function processResponse(array $response) : void
-    {
-        
     }
 
     private function fetchFromUrl(string $url): array

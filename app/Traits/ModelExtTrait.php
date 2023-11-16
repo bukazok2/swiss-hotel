@@ -1,23 +1,30 @@
-<?php 
+<?php
 
 namespace App\Traits;
 
 use CodeIgniter\Entity\Entity;
+use CodeIgniter\Model;
 
-trait InsertOrUpdateTrait
+trait ModelExtTrait
 {
-    public function insertOrUpdate(string $uniqueField, Entity $data) : int|null
+    public function insertOrUpdate(array $uniqueFields, Model $model, Entity $data): int|null
     {
-        $existingRecord = $this->where($uniqueField, $data[$uniqueField])->first();
+        $whereCondition = [];
+        foreach ($uniqueFields as $field) {
+            $whereCondition[$field] = $data->$field;
+        }
+
+        $existingRecord = $model->where($whereCondition)->first();
 
         if ($existingRecord) 
         {
-            $this->update($existingRecord['id'], $data);
-            return $existingRecord['id'];
-        } 
-        else 
+            $model->update($existingRecord->id, $data);
+            return $existingRecord->id;
+        }
+        else
         {
-            return $this->insert($data);
+            $model->insert($data);
+            return $model->getInsertID();
         }
     }
 }

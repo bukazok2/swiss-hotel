@@ -1,15 +1,17 @@
 <?php
 
+namespace App\Services;
+
 use App\Models\AttachmentsModel;
 use App\Models\CityModel;
 use App\Models\CountryModel;
 use CodeIgniter\Config\BaseService;
 use App\Models\HotelModel;
 use App\Models\PriceModel;
-use App\Entities\Price;
-use App\Entities\Country;
-use App\Entities\City;
-use App\Entities\Hotel;
+use App\Entity\Price;
+use App\Entity\Country;
+use App\Entity\City;
+use App\Entity\Hotel;
 
 class DataProcessor extends BaseService
 {
@@ -42,13 +44,12 @@ class DataProcessor extends BaseService
             $country->country = $resp['country'];
             $country->ext_country_id = $resp['country_id'];
 
-            // City Entity
             $city = new City();
             $city->city = $resp['city'];
             $city->ext_city_id = $resp['city_id'];
 
-            $city_id = $this->cityModel->insertOrUpdate("ext_city_id",$city);
-            $country_id = $this->countryModel->insertOrUpdate("ext_country_id",$country);
+            $city_id = $this->cityModel->insertOrUpdate(array("ext_city_id"),$this->cityModel,$city);
+            $country_id = $this->countryModel->insertOrUpdate(array("ext_country_id"),$this->countryModel,$country);
 
             $hotel = new Hotel();
             $hotel->address = $resp['address'];
@@ -61,10 +62,10 @@ class DataProcessor extends BaseService
             $hotel->country_id = $city_id;
             $hotel->city_id = $country_id;
 
-            $hotel_id = $this->hotelModel->insertOrUpdate("ext_hotel_id",$hotel);
+            $hotel_id = $this->hotelModel->insertOrUpdate(array("ext_hotel_id"),$this->hotelModel,$hotel);
 
             $price->hotel_id = $hotel_id;
-            $this->priceModel->insertOrUpdate("source",$price);
+            $this->priceModel->insertOrUpdate(array("source","hotel_id"),$this->priceModel,$price);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
-
+use App\Services\DataProcessor;
 /**
  * Services Configuration file.
  *
