@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\Attachment;
 use App\Models\AttachmentsModel;
 use App\Models\CityModel;
 use App\Models\CountryModel;
@@ -12,6 +13,7 @@ use App\Entity\Price;
 use App\Entity\Country;
 use App\Entity\City;
 use App\Entity\Hotel;
+use Exception;
 
 class DataProcessor extends BaseService
 {
@@ -59,13 +61,22 @@ class DataProcessor extends BaseService
             $hotel->longitude = $resp['longitude'];
             $hotel->star = $resp['star'];
             $hotel->zip = $resp['zip'];
-            $hotel->country_id = $city_id;
-            $hotel->city_id = $country_id;
+            $hotel->country_id = $country_id;
+            $hotel->city_id = $city_id;
 
+            if($resp['image'])
+            {
+                $attachment = new Attachment();
+                $attachment->url_from = $resp['image'];
+                $hotel->attachment_id = $this->attachmentsModel->insertOrUpdate(array("id"),$this->attachmentsModel,$attachment);
+            }
+
+            
             $hotel_id = $this->hotelModel->insertOrUpdate(array("ext_hotel_id"),$this->hotelModel,$hotel);
 
             $price->hotel_id = $hotel_id;
             $this->priceModel->insertOrUpdate(array("source","hotel_id"),$this->priceModel,$price);
         }
     }
+
 }

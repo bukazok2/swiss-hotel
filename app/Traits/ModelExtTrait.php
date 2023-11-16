@@ -13,8 +13,8 @@ trait ModelExtTrait
         foreach ($uniqueFields as $field) {
             $whereCondition[$field] = $data->$field;
         }
-
         $existingRecord = $model->where($whereCondition)->first();
+  
 
         if ($existingRecord) 
         {

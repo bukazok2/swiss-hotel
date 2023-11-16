@@ -18,4 +18,5 @@ class AttachmentsModel extends Model
         "created_at",
         "updated_at",
     ];
+    protected $returnType    = \App\Entity\Attachment::class;
 }
