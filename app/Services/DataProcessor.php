@@ -77,6 +77,7 @@ class DataProcessor extends BaseService
             $price->hotel_id = $hotel_id;
             $this->priceModel->insertOrUpdate(array("source","hotel_id"),$this->priceModel,$price);
         }
-    }
 
+        $this->priceModel->updateCheapestFlag();
+    }
 }

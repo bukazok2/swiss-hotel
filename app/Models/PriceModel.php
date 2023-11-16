@@ -21,4 +21,18 @@ class PriceModel extends Model
         "updated_at",
     ];
     protected $returnType    = \App\Entity\Price::class;
+
+    public function updateCheapestFlag()
+    {
+        $subquery = $this->select('MIN(price) as min_price, hotel_id')
+                        ->groupBy('hotel_id')
+                        ->get();
+
+        foreach ($subquery->getResult() as $row) {
+            $this->set('cheapest_flag', 1)
+                 ->where('hotel_id', $row->hotel_id)
+                 ->where('price', $row->min_price)
+                 ->update();
+        }
+    }
 }

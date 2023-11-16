@@ -7,3 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('Fetch', 'Fetch::index');
+$routes->get('Hotels', 'HotelController::index');
