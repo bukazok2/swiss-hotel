@@ -13,6 +13,8 @@ use App\Entity\Price;
 use App\Entity\Country;
 use App\Entity\City;
 use App\Entity\Hotel;
+use \CodeIgniter\HTTP\CURLRequest;
+use \Config\Services;
 use Exception;
 
 class DataProcessor extends BaseService
@@ -22,9 +24,11 @@ class DataProcessor extends BaseService
     private CountryModel $countryModel;
     private CityModel $cityModel;
     private AttachmentsModel $attachmentsModel;
+    private CURLRequest $curl; 
 
     function __construct()
     {
+        $this->curl = Services::curlrequest();
         $this->hotelModel = new HotelModel();
         $this->priceModel = new PriceModel();
         $this->countryModel = new CountryModel();
@@ -34,6 +38,13 @@ class DataProcessor extends BaseService
 
     public function processData(array $response) : void
     {
+        $this->hotelModel->truncate();
+        $this->priceModel->truncate();
+        $this->countryModel->truncate();
+        $this->cityModel->truncate();
+        $this->attachmentsModel->truncate();
+
+        
         foreach($response["data"]["hotels"] as $resp)
         {
             $price = new Price();
@@ -64,20 +75,76 @@ class DataProcessor extends BaseService
             $hotel->country_id = $country_id;
             $hotel->city_id = $city_id;
 
-            if($resp['image'])
-            {
-                $attachment = new Attachment();
-                $attachment->url_from = $resp['image'];
-                $hotel->attachment_id = $this->attachmentsModel->insertOrUpdate(array("id"),$this->attachmentsModel,$attachment);
-            }
-
+            $attachment = new Attachment();
+            $attachment->url_from = $resp['image'];
+            $attachment_id = $this->attachmentsModel->insertOrUpdate(array("id"),$this->attachmentsModel,$attachment);
             
+            $price->attachment_id = $attachment_id;
+
+            $hotel->attachment_id = 0;
+
             $hotel_id = $this->hotelModel->insertOrUpdate(array("ext_hotel_id"),$this->hotelModel,$hotel);
 
             $price->hotel_id = $hotel_id;
             $this->priceModel->insertOrUpdate(array("source","hotel_id"),$this->priceModel,$price);
         }
+    }
 
+    public function updateCachedData()
+    {
         $this->priceModel->updateCheapestFlag();
+
+        $prices = $this->priceModel->findWithAttachments();
+
+        foreach($prices as $price)
+        {
+            if($price->cheapest_flag == 1)
+            {
+                $attachment_id = 0;
+                if(!$this->isImageBroken($price->attachment_url))
+                {
+                    $attachment_id = $price->attachment_id;
+                }
+                else
+                {
+                    $attachment_id = $this->findFallbackImage($price->hotel_id,$prices);
+                }
+
+                $this->hotelModel->updateAttachmentId($price->hotel_id,$attachment_id);
+            }
+        }
+    }
+
+    private function findFallbackImage(int $hotel_id,array $prices) : int
+    {
+        foreach($prices as $price)
+        {
+            if($price->cheapest_flag == 0 && $price->hotel_id == $hotel_id)
+            {
+                if(!$this->isImageBroken($price->attachment_url))
+                {
+                    return $price->attachment_id;
+                }
+            }
+        }
+
+        return 0;
+    }
+    
+
+    private function isImageBroken($image) : bool
+    {
+        if(!$image)
+            return true;
+
+        try
+        {
+            $this->curl->request('get', $image);
+            return false;
+        }
+        catch(Exception $e)
+        {
+        }
+        return true;
     }
 }

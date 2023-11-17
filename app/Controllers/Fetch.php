@@ -15,7 +15,6 @@ class Fetch extends BaseController
 
     private CURLRequest $curl;
     private DataProcessor $procesor;
-   
 
     public function __construct()
     {
@@ -38,6 +37,12 @@ class Fetch extends BaseController
      
         $this->procesor->processData($response);
 
+        return "success";
+    }
+
+    public function updateCache() : string
+    {
+        $this->procesor->updateCachedData();
         return "success";
     }
 

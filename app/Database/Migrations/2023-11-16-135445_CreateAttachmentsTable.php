@@ -22,6 +22,7 @@ class CreateAttachmentsTable extends Migration
             ],
             'url_from' => [
                 'type' => 'VARCHAR',
+                'default' => NULL,
                 'constraint' => '2048',
             ],
             'created_at' => [

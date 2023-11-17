@@ -7,4 +7,5 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('Fetch', 'Fetch::index');
+$routes->get('UpdateCache', 'Fetch::updateCache');
 $routes->get('Hotels', 'HotelController::index');

@@ -33,6 +33,11 @@ class CreatePricesTable extends Migration
                 'constraint' => 1,
                 'default' => 0,
             ],
+            'attachment_id' => [
+                'type' => 'INT',  
+                'constraint' => 12,
+                'default' => 0,
+            ],
             'created_at' => [
                 'type' => 'TIMESTAMP',
                 'default' => new RawSql('CURRENT_TIMESTAMP'),

@@ -17,6 +17,7 @@ class PriceModel extends Model
         'price',
         'source',
         "cheapest_flag",
+        "attachment_id",
         "created_at",
         "updated_at",
     ];
@@ -32,7 +33,24 @@ class PriceModel extends Model
             $this->set('cheapest_flag', 1)
                  ->where('hotel_id', $row->hotel_id)
                  ->where('price', $row->min_price)
+                 ->limit(1)
                  ->update();
         }
     }
+
+    public function findWithAttachments()
+    {
+        $sql = "
+            SELECT prfx_prices.*,
+                prfx_attachments.url_from AS attachment_url
+            FROM prfx_prices
+            LEFT JOIN prfx_attachments ON prfx_attachments.id = prfx_prices.attachment_id
+        ";
+
+        $query = $this->db->query($sql);
+        $prices = $query->getResult($this->returnType);
+
+        return $prices;
+    }
+
 }
