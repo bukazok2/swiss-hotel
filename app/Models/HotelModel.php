@@ -27,17 +27,19 @@ class HotelModel extends Model
     ];
     protected $returnType    = \App\Entity\Hotel::class;
 
-    public function findAll(int $limit = PHP_INT_MAX,int $offset = 0)
+    public function findAll(int $limit = PHP_INT_MAX, int $offset = 0)
     {
         $sql = "
             SELECT prfx_hotels.*,
                 prfx_attachments.url_from AS attachment_url, 
                 prfx_cities.city AS city_name, 
-                prfx_countries.country AS country_name
+                prfx_countries.country AS country_name,
+                prfx_prices.price
             FROM prfx_hotels
             LEFT JOIN prfx_attachments ON prfx_attachments.id = prfx_hotels.attachment_id
             LEFT JOIN prfx_cities ON prfx_cities.id = prfx_hotels.city_id
             LEFT JOIN prfx_countries ON prfx_countries.id = prfx_hotels.country_id
+            LEFT JOIN prfx_prices ON prfx_prices.hotel_id = prfx_hotels.id AND prfx_prices.cheapest_flag = 1
             LIMIT ? OFFSET ?
         ";
 
@@ -46,4 +48,5 @@ class HotelModel extends Model
 
         return $hotels;
     }
+
 }
