@@ -8,8 +8,9 @@ class HotelController extends BaseController
 {
     public function index(): string
     {
-        $hotels = new HotelModel();
-        $hotels = $hotels->findAll();
-        return json_encode($hotels);
+        //$hotels = new HotelModel();
+        //$hotels = $hotels->findAll();
+        //return json_encode($hotels);
+        return view('hotels');
     }
 }
