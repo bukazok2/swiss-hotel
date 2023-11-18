@@ -17,6 +17,8 @@ use \CodeIgniter\HTTP\CURLRequest;
 use \Config\Services;
 use Exception;
 
+use function PHPUnit\Framework\containsOnly;
+
 class DataProcessor extends BaseService
 {
     private HotelModel $hotelModel;
@@ -98,20 +100,20 @@ class DataProcessor extends BaseService
 
         foreach($prices as $price)
         {
-            if($price->cheapest_flag == 1)
+            if($price->cheapest_flag != 1)
+                continue;
+        
+            $attachment_id = 0;
+            if(!$this->isImageBroken($price->attachment_url))
             {
-                $attachment_id = 0;
-                if(!$this->isImageBroken($price->attachment_url))
-                {
-                    $attachment_id = $price->attachment_id;
-                }
-                else
-                {
-                    $attachment_id = $this->findFallbackImage($price->hotel_id,$prices);
-                }
-
-                $this->hotelModel->updateAttachmentId($price->hotel_id,$attachment_id);
+                $attachment_id = $price->attachment_id;
             }
+            else
+            {
+                $attachment_id = $this->findFallbackImage($price->hotel_id,$prices);
+            }
+
+            $this->hotelModel->updateAttachmentId($price->hotel_id,$attachment_id);
         }
     }
 
@@ -119,12 +121,12 @@ class DataProcessor extends BaseService
     {
         foreach($prices as $price)
         {
-            if($price->cheapest_flag == 0 && $price->hotel_id == $hotel_id)
+            if($price->cheapest_flag != 0 && $price->hotel_id != $hotel_id)
+                continue;
+        
+            if(!$this->isImageBroken($price->attachment_url))
             {
-                if(!$this->isImageBroken($price->attachment_url))
-                {
-                    return $price->attachment_id;
-                }
+                return $price->attachment_id;
             }
         }
 
