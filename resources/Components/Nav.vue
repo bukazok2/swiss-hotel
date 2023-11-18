@@ -2,29 +2,27 @@
   <nav class="navbar navbar-dark">
     <div class="navbar-nav ml-auto">
       <div class="nav-item">
-        <label for="sort">Rendezés:</label>
+        <label for="sort">Order:</label>
         <select id="sort" v-model="selectedSort">
-          <option value="price">Ár szerint</option>
-          <option value="star">Csillagok szerint</option>
+          <option value="price">By price</option>
+          <option value="star">By stars</option>
         </select>
       </div>
 
-      <!-- Select for Ország Szerint -->
       <div class="nav-item">
-        <label for="countryFilter">Ország szerint:</label>
+        <label for="countryFilter">Country:</label>
         <select id="countryFilter" v-model="selectedCountry">
-          <option selected value="0">Mind</option>
+          <option selected value="0">All</option>
           <option v-for="country in countries" :key="country.id" :value="country.id">
             {{ country.country }}
           </option>
         </select>
       </div>
 
-      <!-- Select for Város szerint -->
       <div class="nav-item">
-        <label for="cityFilter">Város szerint:</label>
+        <label for="cityFilter">City:</label>
         <select id="cityFilter" v-model="selectedCity">
-          <option selected value="0">Mind</option>
+          <option selected value="0">All</option>
           <option v-for="city in cities" :key="city.id" :value="city.id">
             {{ city.city }}
           </option>
@@ -32,7 +30,7 @@
       </div>
 
       <div class="nav-item">
-        <label for="perPage">Oldalankénti ajánlatok száma:</label>
+        <label for="perPage">Number of offers per page:</label>
         <select id="perPage" v-model="itemsPerPage">
           <option value="21">21</option>
         </select>
