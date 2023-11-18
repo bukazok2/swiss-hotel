@@ -1,6 +1,10 @@
 ## Installation & updates
 
 composer install<br />
+
+<br />
+Please review the .env file to ensure that the database has been configured correctly.
+
 php spark db:create swiss<br />
 php spark migrate:refresh<br />
 php spark serve<br />
@@ -10,8 +14,7 @@ php spark serve<br />
 npm install<br />
 npm run dev<br />
 npx tailwindcss -i ./public/css/input.css -o ./public/css/styles.css --watch<br />
-<br />
-Please review the .env file to ensure that the database has been configured correctly.
+
 
 ## After Installation
 
