@@ -52,8 +52,8 @@ export default {
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   font-family: 'Arial', sans-serif;
+  margin:15px;
 }
 
 .pagination-button {
