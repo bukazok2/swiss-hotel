@@ -3,14 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\HotelModel;
+use CodeIgniter\RESTful\ResourceController;
 
-class HotelController extends BaseController
+class HotelController extends ResourceController
 {
-    public function index(): string
+    public function index()
     {
-        //$hotels = new HotelModel();
-        //$hotels = $hotels->findAll();
-        //return json_encode($hotels);
-        return view('hotels');
+        $hotels = new HotelModel();
+        return $this->respond($hotels->findAll(2,0));
     }
 }

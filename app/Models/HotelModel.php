@@ -30,7 +30,7 @@ class HotelModel extends Model
     public function findAll(int $limit = PHP_INT_MAX, int $offset = 0)
     {
         $sql = "
-            SELECT prfx_hotels.*,
+            SELECT prfx_hotels.address,prfx_hotels.latitude,prfx_hotels.id,prfx_hotels.hotel_name,prfx_hotels.star,prfx_hotels.longitude,
                 prfx_attachments.url_from AS attachment_url, 
                 prfx_cities.city AS city_name, 
                 prfx_countries.country AS country_name,
