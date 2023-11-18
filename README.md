@@ -31,7 +31,7 @@ php 8<br />
 To enhance the page's performance, consider implementing the following optimizations:<br />
 
 1.During the Fetch period, updating the cache might be preferred over deleting and recreating it.<br />
-2.In the UpdateCache period, focus on checking only new images instead of rechecking all images, as the image check, particularly <br />with curl, consumes a significant amount of time.
+2.In the UpdateCache period, focus on checking only new images instead of rechecking all images, as the image check, particularly with curl, consumes a significant amount of time.<br />
 3.Introduce a view table to replace left joins, improving efficiency.<br />
 4.Implement an SQLITE3 database with the :memory: storage option to hold data in memory rather than on disk, contributing to faster access.<br />
 
