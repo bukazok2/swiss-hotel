@@ -139,11 +139,19 @@ class DataProcessor extends BaseService
 
         try
         {
-            $this->curl->request('get', $image);
-            return false;
+            $response = $this->curl->request('get', $image);
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode >= 200 && $statusCode < 300) {
+                return false;
+            } else {
+                return true;
+            }
         }
         catch(Exception $e)
         {
+           
         }
         return true;
     }

@@ -9,40 +9,20 @@ class HotelController extends ResourceController
 {
     public function index()
     {
-        $validColumns = ['price', 'stars'];
+        $validColumns = ['price', 'star'];
         $itemsPerPage = 21;
         $filterByCountry = 0;
         $filterByCity = 0;
         $sortBy = 'price';
 
-        if(isset($_GET['filterByCountry']))
-        {
-            $filterByCountry = $_GET['filterByCountry'];
-        }
+        $filterByCountry = $_GET['filterByCountry'] ?? 0;
+        $filterByCity = $_GET['filterByCity'] ?? 0;
+        $itemsPerPage = $_GET['itemsPerPage'] ?? 21;
+        $sortBy = in_array($_GET['sortBy'] ?? '', $validColumns) ? $_GET['sortBy'] : 'price';
+        $currentPage = $_GET['currentPage'] ?? 1;
+        $offset = ($currentPage - 1) * $itemsPerPage;
 
-        if(isset($_GET['filterByCity']))
-        {
-            $filterByCity = $_GET['filterByCity'];
-        }
-
-        if(isset($_GET['itemsPerPage']))
-        {
-            $itemsPerPage = $_GET['itemsPerPage'];
-        }
-
-        if(isset($_GET['sortBy']))
-        {
-            if (!in_array($_GET['sortBy'], $validColumns)) 
-            {
-                $sortBy = 'price';
-            }
-            else
-            {
-                $sortBy = $_GET['sortBy'];
-            }
-        }
-        
         $hotels = new HotelModel();
-        return $this->respond($hotels->findAllWithParams($itemsPerPage,0,$filterByCountry,$filterByCity,$sortBy));
+        return $this->respond($hotels->findAllWithParams($itemsPerPage,$offset,$filterByCountry,$filterByCity,$sortBy));
     }
 }

@@ -69,7 +69,7 @@ export default {
       this.$emit("filterChange", newFilters);
     },
     fetchCountries() {
-      fetch("http://localhost/swiss-hotel/public/Countries")
+      fetch("http://localhost:8080/Countries")
         .then((res) => res.json())
         .then((data) => {
           this.countries = data;
@@ -79,7 +79,7 @@ export default {
         });
     },
     fetchCities() {
-      fetch("http://localhost/swiss-hotel/public/Cities")
+      fetch("http://localhost:8080/Cities")
         .then((res) => res.json())
         .then((data) => {
           this.cities = data;

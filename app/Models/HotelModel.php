@@ -29,36 +29,36 @@ class HotelModel extends Model
 
     public function findAllWithParams(int $limit = PHP_INT_MAX, int $offset = 0, $country_id = 0, $city_id = 0, $sortBy = "price")
     {
-        $builder = $this->db->table('prfx_hotels');
-        $builder->select('prfx_hotels.address, prfx_hotels.latitude, prfx_hotels.id, prfx_hotels.hotel_name, prfx_hotels.star, prfx_hotels.longitude, prfx_attachments.url_from AS attachment_url, prfx_cities.city AS city_name, prfx_countries.country AS country_name, prfx_prices.price');
-        $builder->join('prfx_attachments', 'prfx_attachments.id = prfx_hotels.attachment_id', 'left');
-        $builder->join('prfx_cities', 'prfx_cities.id = prfx_hotels.city_id', 'left');
-        $builder->join('prfx_countries', 'prfx_countries.id = prfx_hotels.country_id', 'left');
-        $builder->join('prfx_prices', 'prfx_prices.hotel_id = prfx_hotels.id AND prfx_prices.cheapest_flag = 1', 'left');
-        $builder->where('prfx_hotels.attachment_id <>', 0);
+        $baseBuilder = $this->db->table('prfx_hotels');
+        $baseBuilder->select('prfx_hotels.address, prfx_hotels.latitude, prfx_hotels.id, prfx_hotels.hotel_name, prfx_hotels.star, prfx_hotels.longitude, prfx_attachments.url_from AS attachment_url, prfx_cities.city AS city_name, prfx_countries.country AS country_name, prfx_prices.price');
+        $baseBuilder->join('prfx_attachments', 'prfx_attachments.id = prfx_hotels.attachment_id', 'left');
+        $baseBuilder->join('prfx_cities', 'prfx_cities.id = prfx_hotels.city_id', 'left');
+        $baseBuilder->join('prfx_countries', 'prfx_countries.id = prfx_hotels.country_id', 'left');
+        $baseBuilder->join('prfx_prices', 'prfx_prices.hotel_id = prfx_hotels.id AND prfx_prices.cheapest_flag = 1', 'left');
+        $baseBuilder->where('prfx_hotels.attachment_id <>', 0);
         if ($country_id > 0) {
-            $builder->where('prfx_countries.id', $country_id);
+            $baseBuilder->where('prfx_countries.id', $country_id);
         }
         if ($city_id > 0) {
-            $builder->where('prfx_cities.id', $city_id);
+            $baseBuilder->where('prfx_cities.id', $city_id);
         }
-        if($sortBy == "price")
-        {
-            dd("prfx_prices.".$sortBy);
-            $builder->orderBy("prfx_prices.".$sortBy, 'DESC');
-        }
-        else
-        {
-            $builder->orderBy("prfx_hotels.".$sortBy, 'DESC');
-        }
-        $builder->limit($limit, $offset);
 
-        $query = $builder->get();
+        $countBuilder = clone $baseBuilder;
+        $countBuilder->select('COUNT(*) as total');
+        $total = $countBuilder->countAllResults(false);
+
+        $dataBuilder = clone $baseBuilder;
+        $dataBuilder->orderBy($sortBy, 'DESC');
+        $dataBuilder->limit($limit, $offset);
+
+        $query = $dataBuilder->get();
         $hotels = $query->getResult($this->returnType);
 
-        return $hotels;
+        return [
+            'data' => $hotels,
+            'total' => $total,
+        ];
     }
-
 
     public function updateAttachmentId($id,$attachment_id)
     {
