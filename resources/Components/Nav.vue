@@ -88,7 +88,6 @@ export default {
     },
   },
   created() {
-    // Fetch countries and cities when the component is created
     this.fetchCountries();
     this.fetchCities();
   },

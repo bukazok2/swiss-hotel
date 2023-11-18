@@ -27,7 +27,7 @@ class HotelModel extends Model
     ];
     protected $returnType    = \App\Entity\Hotel::class;
 
-    public function findAllWithParams(int $limit = PHP_INT_MAX, int $offset = 0, $country_id = 0, $city_id = 0, $sortBy = "price")
+    public function findAllWithParams(int $limit = PHP_INT_MAX, int $offset = 0, int $country_id = 0,int $city_id = 0, string $sortBy = "price") : array
     {
         $baseBuilder = $this->db->table('prfx_hotels');
         $baseBuilder->select('prfx_hotels.address, prfx_hotels.latitude, prfx_hotels.id, prfx_hotels.hotel_name, prfx_hotels.star, prfx_hotels.longitude, prfx_attachments.url_from AS attachment_url, prfx_cities.city AS city_name, prfx_countries.country AS country_name, prfx_prices.price');
