@@ -32,6 +32,10 @@ export default {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;
         this.$emit('page-clicked', page);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
       }
     },
     prevPage() {
