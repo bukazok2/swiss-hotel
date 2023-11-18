@@ -2,8 +2,7 @@
 
 composer install<br />
 
-<br />
-Please review the .env file to ensure that the database has been configured correctly.
+Please review the .env file to ensure that the database has been configured correctly.<br /><br />
 
 php spark db:create swiss<br />
 php spark migrate:refresh<br />
