@@ -5,7 +5,7 @@
         <label for="sort">Rendezés:</label>
         <select id="sort" v-model="selectedSort">
           <option value="price">Ár szerint</option>
-          <option value="stars">Csillagok szerint</option>
+          <option value="star">Csillagok szerint</option>
         </select>
       </div>
 

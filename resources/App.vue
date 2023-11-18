@@ -19,9 +19,11 @@ export default {
     return {
       data: null,
       filters: {
-        // Define your initial filters here
         sortBy: "price",
-        filterBy: "country",
+        filterBy: {
+          country: 0,
+          city: 0,
+        },
         itemsPerPage: 21,
       },
     };
@@ -35,8 +37,8 @@ export default {
       console.log(this.filters.sortBy);
       console.log(this.filters.filterBy);
       console.log(this.filters.itemsPerPage);
-      const url = `http://localhost/swiss-hotel/public/Hotels?sortBy=${this.filters.sortBy}&filterBy=${this.filters.filterBy}&itemsPerPage=${this.filters.itemsPerPage}`;
-
+      const url = `http://localhost/swiss-hotel/public/Hotels?sortBy=${this.filters.sortBy}&filterByCountry=${this.filters.filterBy.country}&filterByCity=${this.filters.filterBy.city}&itemsPerPage=${this.filters.itemsPerPage}`;
+      console.log(url);
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
@@ -47,7 +49,6 @@ export default {
         });
     },
     handleFilterChange(newFilters) {
-      console.log("handlefilterchanfe");
       this.filters = { ...this.filters, ...newFilters };
       this.fetchData();
     },
